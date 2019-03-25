@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.438
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NsqSharp", "NsqSharp\NsqSharp.csproj", "{7327244D-E163-4C35-9C1A-8DBDF06B9408}"
 EndProject
@@ -54,6 +54,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Echo.Bus.Tls", "Echo.Bus.Tls", "{D48C6B0A-5E6B-4AC8-B1EE-58CF905358AA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Echo.Bus.Tls", "Examples\Echo.Bus.Tls\Echo.Bus.Tls.csproj", "{4676806B-2270-4CF5-B85A-B566FF39B426}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PureNSQSharp", "PureNSQSharp\PureNSQSharp.csproj", "{638A1E3D-78A3-4574-97F3-3BF185FCEA00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -152,6 +154,12 @@ Global
 		{4676806B-2270-4CF5-B85A-B566FF39B426}.Integration Tests|Any CPU.Build.0 = Release|Any CPU
 		{4676806B-2270-4CF5-B85A-B566FF39B426}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4676806B-2270-4CF5-B85A-B566FF39B426}.Release|Any CPU.Build.0 = Release|Any CPU
+		{638A1E3D-78A3-4574-97F3-3BF185FCEA00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{638A1E3D-78A3-4574-97F3-3BF185FCEA00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{638A1E3D-78A3-4574-97F3-3BF185FCEA00}.Integration Tests|Any CPU.ActiveCfg = Debug|Any CPU
+		{638A1E3D-78A3-4574-97F3-3BF185FCEA00}.Integration Tests|Any CPU.Build.0 = Debug|Any CPU
+		{638A1E3D-78A3-4574-97F3-3BF185FCEA00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{638A1E3D-78A3-4574-97F3-3BF185FCEA00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -178,5 +186,8 @@ Global
 		{438C8E35-46DD-4136-8BBB-40082B305C8D} = {836ECD8F-C1DC-466B-839D-3D4607F5C837}
 		{D48C6B0A-5E6B-4AC8-B1EE-58CF905358AA} = {0FB50390-80AC-4487-BC62-C9311FD60D4D}
 		{4676806B-2270-4CF5-B85A-B566FF39B426} = {D48C6B0A-5E6B-4AC8-B1EE-58CF905358AA}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FEBED846-6EA5-4FFB-9E5A-F3498E34AA3E}
 	EndGlobalSection
 EndGlobal
