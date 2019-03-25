@@ -3,6 +3,9 @@ PureNSQSharp
 
 A .NET Standard client library for [NSQ](https://github.com/nsqio/nsq), a realtime distributed messaging platform.
 
+**[NuGet Package](https://www.nuget.org/packages/PureNSQSharp)** [![PureNSQSharp](https://img.shields.io/nuget/v/PureNSQSharp.svg)](https://www.nuget.org/packages/PureNSQSharp/) 
+
+
 ## Quick Install
 
 PureNSQSharp is a client library that talks to the `nsqd` (message queue) and `nsqlookupd` (topic discovery service).
