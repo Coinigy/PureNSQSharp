@@ -2,7 +2,7 @@
 using System.Runtime.Serialization;
 using System.Security.Permissions;
 
-namespace NsqSharp.Core
+namespace PureNSQSharp.Core
 {
     // https://github.com/nsqio/go-nsq/blob/master/errors.go
 

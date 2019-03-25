@@ -1,7 +1,7 @@
 ﻿using System;
-using NsqSharp.Utils.Channels;
+using PureNSQSharp.Utils.Channels;
 
-namespace NsqSharp.Utils
+namespace PureNSQSharp.Utils
 {
     /// <summary>
     /// Net package. http://golang.org/pkg/net
@@ -22,7 +22,7 @@ namespace NsqSharp.Utils
                 throw new ArgumentException("only 'tcp' network is supported", "network");
 
             // TODO: Make this more robust, support IPv6 splitting
-            var split = address.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
+            var split = address.Split(new[] {':'}, StringSplitOptions.RemoveEmptyEntries);
             string hostname = split[0];
             int port = int.Parse(split[1]);
 
@@ -57,10 +57,7 @@ namespace NsqSharp.Utils
 
             Select
                 .CaseReceive(dialChan, c => conn = c)
-                .CaseReceive(timeoutChan, o =>
-                {
-                    throw new TimeoutException(string.Format("timeout {0} exceed when dialing {1}", timeout, address));
-                })
+                .CaseReceive(timeoutChan, o => { throw new TimeoutException(string.Format("timeout {0} exceed when dialing {1}", timeout, address)); })
                 .NoDefault();
 
             timeoutChan.Close();

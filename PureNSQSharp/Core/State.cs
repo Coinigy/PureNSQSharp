@@ -1,4 +1,4 @@
-﻿namespace NsqSharp.Core
+﻿namespace PureNSQSharp.Core
 {
     // https://github.com/nsqio/go-nsq/blob/master/states.go
 

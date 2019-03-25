@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
-using NsqSharp.Utils.Channels;
+using PureNSQSharp.Utils.Channels;
 
-namespace NsqSharp.Utils
+namespace PureNSQSharp.Utils
 {
     /// <summary>
     /// A Ticker holds a channel that delivers `ticks' of a clock at intervals. http://golang.org/pkg/time/#Ticker
@@ -42,6 +42,7 @@ namespace NsqSharp.Utils
                                     _threadingTimer.Dispose();
                                     _threadingTimer = null;
                                 }
+
                                 return;
                             }
 
@@ -49,7 +50,6 @@ namespace NsqSharp.Utils
                                 .CaseSend(_tickerChan, DateTime.UtcNow)
                                 .Default(null);
                         }
-
                     }, null, duration, duration);
 
                 _threadingTimer = t;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NsqSharp.Utils.Extensions
+namespace PureNSQSharp.Utils.Extensions
 {
     /// <summary>
     /// <see cref="DateTime"/> extension methods.
@@ -24,7 +24,7 @@ namespace NsqSharp.Utils.Extensions
         /// </summary>
         public static long Unix(this DateTime dateTime)
         {
-            return (long)((dateTime - _epoch).TotalSeconds);
+            return (long) ((dateTime - _epoch).TotalSeconds);
         }
     }
 }

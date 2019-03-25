@@ -1,4 +1,4 @@
-﻿namespace NsqSharp.Utils
+﻿namespace PureNSQSharp.Utils
 {
     /// <summary>
     /// Writer is the interface that wraps the basic Write method. http://golang.org/pkg/io/#Writer

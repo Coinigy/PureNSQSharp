@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace NsqSharp.Utils
+namespace PureNSQSharp.Utils
 {
     /// <summary>
     /// Binary package. https://golang.org/src/encoding/binary/binary.go
@@ -41,14 +41,14 @@ namespace NsqSharp.Utils
         /// </summary>
         public void PutUint64(byte[] b, UInt64 v)
         {
-            b[0] = (byte)(v >> 56);
-            b[1] = (byte)((v >> 48) & 0xFF);
-            b[2] = (byte)((v >> 40) & 0xFF);
-            b[3] = (byte)((v >> 32) & 0xFF);
-            b[4] = (byte)((v >> 24) & 0xFF);
-            b[5] = (byte)((v >> 16) & 0xFF);
-            b[6] = (byte)((v >> 8) & 0xFF);
-            b[7] = (byte)(v & 0xFF);
+            b[0] = (byte) (v >> 56);
+            b[1] = (byte) ((v >> 48) & 0xFF);
+            b[2] = (byte) ((v >> 40) & 0xFF);
+            b[3] = (byte) ((v >> 32) & 0xFF);
+            b[4] = (byte) ((v >> 24) & 0xFF);
+            b[5] = (byte) ((v >> 16) & 0xFF);
+            b[6] = (byte) ((v >> 8) & 0xFF);
+            b[7] = (byte) (v & 0xFF);
         }
 
         /// <summary>
@@ -56,14 +56,14 @@ namespace NsqSharp.Utils
         /// </summary>
         public void PutUint64(BinaryWriter w, UInt64 v)
         {
-            w.Write((byte)(v >> 56));
-            w.Write((byte)((v >> 48) & 0xFF));
-            w.Write((byte)((v >> 40) & 0xFF));
-            w.Write((byte)((v >> 32) & 0xFF));
-            w.Write((byte)((v >> 24) & 0xFF));
-            w.Write((byte)((v >> 16) & 0xFF));
-            w.Write((byte)((v >> 8) & 0xFF));
-            w.Write((byte)(v & 0xFF));
+            w.Write((byte) (v >> 56));
+            w.Write((byte) ((v >> 48) & 0xFF));
+            w.Write((byte) ((v >> 40) & 0xFF));
+            w.Write((byte) ((v >> 32) & 0xFF));
+            w.Write((byte) ((v >> 24) & 0xFF));
+            w.Write((byte) ((v >> 16) & 0xFF));
+            w.Write((byte) ((v >> 8) & 0xFF));
+            w.Write((byte) (v & 0xFF));
         }
 
         /// <summary>
@@ -71,10 +71,10 @@ namespace NsqSharp.Utils
         /// </summary>
         public void PutUint32(byte[] b, UInt32 v)
         {
-            b[0] = (byte)(v >> 24);
-            b[1] = (byte)((v >> 16) & 0xFF);
-            b[2] = (byte)((v >> 8) & 0xFF);
-            b[3] = (byte)(v & 0xFF);
+            b[0] = (byte) (v >> 24);
+            b[1] = (byte) ((v >> 16) & 0xFF);
+            b[2] = (byte) ((v >> 8) & 0xFF);
+            b[3] = (byte) (v & 0xFF);
         }
 
         /// <summary>
@@ -82,10 +82,10 @@ namespace NsqSharp.Utils
         /// </summary>
         public void PutUint32(BinaryWriter w, UInt32 v)
         {
-            w.Write((byte)(v >> 24));
-            w.Write((byte)((v >> 16) & 0xFF));
-            w.Write((byte)((v >> 8) & 0xFF));
-            w.Write((byte)(v & 0xFF));
+            w.Write((byte) (v >> 24));
+            w.Write((byte) ((v >> 16) & 0xFF));
+            w.Write((byte) ((v >> 8) & 0xFF));
+            w.Write((byte) (v & 0xFF));
         }
 
         /// <summary>
@@ -101,10 +101,10 @@ namespace NsqSharp.Utils
         /// </summary>
         public void PutUint32(BinaryWriter w, Int32 v)
         {
-            w.Write((byte)(v >> 24));
-            w.Write((byte)((v >> 16) & 0xFF));
-            w.Write((byte)((v >> 8) & 0xFF));
-            w.Write((byte)(v & 0xFF));
+            w.Write((byte) (v >> 24));
+            w.Write((byte) ((v >> 16) & 0xFF));
+            w.Write((byte) ((v >> 8) & 0xFF));
+            w.Write((byte) (v & 0xFF));
         }
 
         /// <summary>
@@ -112,10 +112,10 @@ namespace NsqSharp.Utils
         /// </summary>
         public void PutUint32(byte[] b, Int32 v, int offset)
         {
-            b[offset] = (byte)(v >> 24);
-            b[offset + 1] = (byte)((v >> 16) & 0xFF);
-            b[offset + 2] = (byte)((v >> 8) & 0xFF);
-            b[offset + 3] = (byte)(v & 0xFF);
+            b[offset] = (byte) (v >> 24);
+            b[offset + 1] = (byte) ((v >> 16) & 0xFF);
+            b[offset + 2] = (byte) ((v >> 8) & 0xFF);
+            b[offset + 3] = (byte) (v & 0xFF);
         }
 
         /// <summary>
@@ -123,8 +123,8 @@ namespace NsqSharp.Utils
         /// </summary>
         public void PutUint16(byte[] b, UInt16 v)
         {
-            b[0] = (byte)((v >> 8) & 0xFF);
-            b[1] = (byte)(v & 0xFF);
+            b[0] = (byte) ((v >> 8) & 0xFF);
+            b[1] = (byte) (v & 0xFF);
         }
 
         /// <summary>
@@ -132,8 +132,8 @@ namespace NsqSharp.Utils
         /// </summary>
         public void PutUint16(BinaryWriter w, UInt16 v)
         {
-            w.Write((byte)((v >> 8) & 0xFF));
-            w.Write((byte)(v & 0xFF));
+            w.Write((byte) ((v >> 8) & 0xFF));
+            w.Write((byte) (v & 0xFF));
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace NsqSharp.Utils
         /// </summary>
         public UInt16 UInt16(byte[] b)
         {
-            ushort value = (ushort)(
+            ushort value = (ushort) (
                 (b[0] << 8) |
                 (b[1])
             );

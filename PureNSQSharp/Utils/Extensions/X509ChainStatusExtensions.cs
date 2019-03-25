@@ -2,7 +2,7 @@
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
-namespace NsqSharp.Utils.Extensions
+namespace PureNSQSharp.Utils.Extensions
 {
     internal static class X509ChainStatusExtensions
     {

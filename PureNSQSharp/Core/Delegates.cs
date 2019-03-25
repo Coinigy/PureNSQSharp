@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NsqSharp.Core
+namespace PureNSQSharp.Core
 {
     // https://github.com/nsqio/go-nsq/blob/master/delegates.go
 
@@ -33,12 +33,20 @@ namespace NsqSharp.Core
     {
         public Conn c { get; set; }
 
-        public void OnFinish(Message m) { c.onMessageFinish(m); }
+        public void OnFinish(Message m)
+        {
+            c.onMessageFinish(m);
+        }
+
         public TimeSpan OnRequeue(Message m, TimeSpan? delay, bool backoff)
         {
             return c.onMessageRequeue(m, delay, backoff);
         }
-        public void OnTouch(Message m) { c.onMessageTouch(m); }
+
+        public void OnTouch(Message m)
+        {
+            c.onMessageTouch(m);
+        }
     }
 
     /// <summary>

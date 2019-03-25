@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace NsqSharp.Utils
+namespace PureNSQSharp.Utils
 {
     /// <summary>
     /// OS Package. http://golang.org/pkg/os

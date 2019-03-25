@@ -1,4 +1,4 @@
-﻿namespace NsqSharp.Core
+﻿namespace PureNSQSharp.Core
 {
     /// <summary>
     /// Logger interface.

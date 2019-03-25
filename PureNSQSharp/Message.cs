@@ -4,10 +4,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using System.Threading;
-using NsqSharp.Core;
-using NsqSharp.Utils;
+using PureNSQSharp.Core;
+using PureNSQSharp.Utils;
 
-namespace NsqSharp
+namespace PureNSQSharp
 {
     // https://github.com/nsqio/go-nsq/blob/master/message.go
 
@@ -15,7 +15,7 @@ namespace NsqSharp
     ///     Message is the fundamental data type containing the <see cref="Id"/>, <see cref="Body"/>, and metadata of a
     ///     message received from an nsqd instance.
     /// </summary>
-    [DebuggerDisplay("Id={Id}, Attempts={Attempts}, TS={Timestamp}, NSQD={NsqdAddress}")]
+    [DebuggerDisplay("Id={Id}, Attempts={Attempts}, TS={Timestamp}, NSQD={NSQdAddress}")]
     public sealed class Message : IMessage
     {
         /// <summary>The number of bytes for a Message.ID</summary>
@@ -48,7 +48,7 @@ namespace NsqSharp
 
         /// <summary>The nsqd address which sent this message.</summary>
         /// <value>The nsqd address which sent this message.</value>
-        public string NsqdAddress { get; internal set; }
+        public string NSQdAddress { get; internal set; }
 
         /// <summary>Initializes a new instance of the <see cref="Message"/> class.</summary>
         /// <remarks>
@@ -114,6 +114,7 @@ namespace NsqSharp
             {
                 return;
             }
+
             Delegate.OnFinish(this);
         }
 
@@ -135,6 +136,7 @@ namespace NsqSharp
             {
                 return;
             }
+
             Delegate.OnTouch(this);
         }
 
@@ -211,9 +213,9 @@ namespace NsqSharp
 
             using (var writer = new BinaryWriter(writeStream))
             {
-                ulong ns = (ulong)(Timestamp - _epoch).Ticks * 100;
+                ulong ns = (ulong) (Timestamp - _epoch).Ticks * 100;
                 Binary.BigEndian.PutUint64(writer, ns); // 8 bytes
-                Binary.BigEndian.PutUint16(writer, (ushort)Attempts); // 2 bytes
+                Binary.BigEndian.PutUint16(writer, (ushort) Attempts); // 2 bytes
 
                 writer.Write(ID); // MsgIdLength (16) bytes
 
@@ -239,13 +241,13 @@ namespace NsqSharp
                 ulong timestamp = Binary.BigEndian.UInt64(binaryReader);
                 ushort attempts = Binary.BigEndian.UInt16(binaryReader);
 
-                var timeOffset = new TimeSpan((long)(timestamp / 100));
+                var timeOffset = new TimeSpan((long) (timestamp / 100));
 
                 byte[] id = binaryReader.ReadBytes(MsgIdLength);
 
                 byte[] body = binaryReader.ReadBytes(data.Length - MsgIdLength - 10);
 
-                return new Message(id, body) { Timestamp = _epoch + timeOffset, Attempts = attempts };
+                return new Message(id, body) {Timestamp = _epoch + timeOffset, Attempts = attempts};
             }
         }
 
@@ -295,7 +297,7 @@ namespace NsqSharp
 
         /// <summary>The nsqd address which sent this message.</summary>
         /// <value>The nsqd address which sent this message.</value>
-        string NsqdAddress { get; }
+        string NSQdAddress { get; }
 
         /// <summary>
         ///     <para>Disables the automatic response that would normally be sent when <see cref="IHandler.HandleMessage"/>

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using NsqSharp.Core;
-using NsqSharp.Utils;
-using NsqSharp.Utils.Channels;
-using NsqSharp.Utils.Loggers;
+using PureNSQSharp.Core;
+using PureNSQSharp.Utils;
+using PureNSQSharp.Utils.Channels;
+using PureNSQSharp.Utils.Loggers;
 
-namespace NsqSharp
+namespace PureNSQSharp
 {
     // https://github.com/nsqio/go-nsq/blob/master/producer.go
 
@@ -208,6 +208,7 @@ namespace NsqSharp
                     // already closed
                     return;
                 }
+
                 log(LogLevel.Info, "stopping");
                 _exitChan.Close();
                 close();
@@ -339,7 +340,7 @@ namespace NsqSharp
             ProducerResponse t = null;
             try
             {
-                if (_state != (int)State.Connected)
+                if (_state != (int) State.Connected)
                 {
                     Connect();
                 }
@@ -393,9 +394,9 @@ namespace NsqSharp
 
                 switch (_state)
                 {
-                    case (int)State.Init:
+                    case (int) State.Init:
                         break;
-                    case (int)State.Connected:
+                    case (int) State.Connected:
                         return;
                     default:
                         throw new ErrNotConnected();
@@ -416,7 +417,7 @@ namespace NsqSharp
                     throw;
                 }
 
-                _state = (int)State.Connected;
+                _state = (int) State.Connected;
                 _closeChan = new Chan<int>();
                 _wg.Add(1);
                 log(LogLevel.Info, string.Format("{0} connected to nsqd", _addr));
@@ -426,8 +427,8 @@ namespace NsqSharp
 
         private void close()
         {
-            const int newValue = (int)State.Disconnected;
-            const int comparand = (int)State.Connected;
+            const int newValue = (int) State.Disconnected;
+            const int comparand = (int) State.Connected;
             if (Interlocked.CompareExchange(ref _state, newValue, comparand) != comparand)
             {
                 return;
@@ -440,7 +441,7 @@ namespace NsqSharp
                 // we need to handle this in a goroutine so we don't
                 // block the caller from making progress
                 _wg.Wait();
-                _state = (int)State.Init;
+                _state = (int) State.Init;
             }, string.Format("Producer:close P{0}", _id));
         }
 
@@ -469,14 +470,8 @@ namespace NsqSharp
                     .CaseReceive(_errorChan, data =>
                         popTransaction(FrameType.Error, data)
                     )
-                    .CaseReceive(_closeChan, o =>
-                    {
-                        doLoop = false;
-                    })
-                    .CaseReceive(_exitChan, o =>
-                    {
-                        doLoop = false;
-                    })
+                    .CaseReceive(_closeChan, o => { doLoop = false; })
+                    .CaseReceive(_exitChan, o => { doLoop = false; })
                     .NoDefault(defer: true))
             {
                 // ReSharper disable once LoopVariableIsNeverChangedInsideLoop
@@ -498,6 +493,7 @@ namespace NsqSharp
             {
                 t.Error = new ErrProtocol(Encoding.UTF8.GetString(data));
             }
+
             t.finish();
         }
 
@@ -510,12 +506,13 @@ namespace NsqSharp
             {
                 var t1 = t;
                 GoFunc.Run(() =>
-                           {
-                               t1.Error = new ErrNotConnected();
-                               t1.finish();
-                               wg.Done();
-                           }, "transactionCleanup: drain _transactions");
+                {
+                    t1.Error = new ErrNotConnected();
+                    t1.finish();
+                    wg.Done();
+                }, "transactionCleanup: drain _transactions");
             }
+
             _transactions.Clear();
 
             // spin and free up any writes that might have raced
@@ -526,16 +523,16 @@ namespace NsqSharp
             var ticker = new Ticker(TimeSpan.FromMilliseconds(100));
             bool doLoop = true;
             using (var select =
-                    Select
+                Select
                     .CaseReceive(_transactionChan, t =>
                     {
                         wg.Add(1);
                         GoFunc.Run(() =>
-                                   {
-                                       t.Error = new ErrNotConnected();
-                                       t.finish();
-                                       wg.Done();
-                                   }, "transactionCleanup: finish transaction from _transactionChan");
+                        {
+                            t.Error = new ErrNotConnected();
+                            t.finish();
+                            wg.Done();
+                        }, "transactionCleanup: finish transaction from _transactionChan");
                     })
                     .CaseReceive(ticker.C, _ =>
                     {
@@ -545,6 +542,7 @@ namespace NsqSharp
                             doLoop = false;
                             return;
                         }
+
                         log(LogLevel.Warning, string.Format(
                             "waiting for {0} concurrent producers to finish", _concurrentProducers));
                     })
@@ -556,6 +554,7 @@ namespace NsqSharp
                     select.Execute();
                 }
             }
+
             ticker.Close();
 
             wg.Wait();
@@ -590,12 +589,32 @@ namespace NsqSharp
             }
         }
 
-        void IConnDelegate.OnMessage(Conn c, Message m) { }
-        void IConnDelegate.OnMessageFinished(Conn c, Message m) { }
-        void IConnDelegate.OnMessageRequeued(Conn c, Message m) { }
-        void IConnDelegate.OnBackoff(Conn c) { }
-        void IConnDelegate.OnContinue(Conn c) { }
-        void IConnDelegate.OnResume(Conn c) { }
-        void IConnDelegate.OnHeartbeat(Conn c) { }
+        void IConnDelegate.OnMessage(Conn c, Message m)
+        {
+        }
+
+        void IConnDelegate.OnMessageFinished(Conn c, Message m)
+        {
+        }
+
+        void IConnDelegate.OnMessageRequeued(Conn c, Message m)
+        {
+        }
+
+        void IConnDelegate.OnBackoff(Conn c)
+        {
+        }
+
+        void IConnDelegate.OnContinue(Conn c)
+        {
+        }
+
+        void IConnDelegate.OnResume(Conn c)
+        {
+        }
+
+        void IConnDelegate.OnHeartbeat(Conn c)
+        {
+        }
     }
 }

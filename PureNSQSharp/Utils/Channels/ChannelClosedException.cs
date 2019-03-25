@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace NsqSharp.Utils.Channels
+namespace PureNSQSharp.Utils.Channels
 {
     /// <summary>
     /// Occurs when attempt to send or receive from a closed channel.

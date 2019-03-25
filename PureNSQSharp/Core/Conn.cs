@@ -5,11 +5,11 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading;
-using NsqSharp.Utils;
-using NsqSharp.Utils.Channels;
-using NsqSharp.Utils.Extensions;
+using PureNSQSharp.Utils;
+using PureNSQSharp.Utils.Channels;
+using PureNSQSharp.Utils.Extensions;
 
-namespace NsqSharp.Core
+namespace PureNSQSharp.Core
 {
     // https://github.com/nsqio/go-nsq/blob/master/conn.go
 
@@ -23,15 +23,19 @@ namespace NsqSharp.Core
         /// <summary>Max RDY count</summary>
         [DataMember(Name = "max_rdy_count")]
         public long MaxRdyCount { get; set; }
+
         /// <summary>Use TLSv1</summary>
         [DataMember(Name = "tls_v1")]
         public bool TLSv1 { get; set; }
+
         /// <summary>Use Deflate compression</summary>
         [DataMember(Name = "deflate")]
         public bool Deflate { get; set; }
+
         /// <summary>Use Snappy compression</summary>
         [DataMember(Name = "snappy")]
         public bool Snappy { get; set; }
+
         /// <summary>Auth required</summary>
         [DataMember(Name = "auth_required")]
         public bool AuthRequired { get; set; }
@@ -47,9 +51,11 @@ namespace NsqSharp.Core
         /// <summary>Identity</summary>
         [DataMember(Name = "identity")]
         public string Identity { get; set; }
+
         /// <summary>Identity URL</summary>
         [DataMember(Name = "identity_url")]
         public string IdentityUrl { get; set; }
+
         /// <summary>Permission Count</summary>
         [DataMember(Name = "permission_count")]
         public long PermissionCount { get; set; }
@@ -158,7 +164,7 @@ namespace NsqSharp.Core
         public IdentifyResponse Connect()
         {
             var conn = Net.DialTimeout("tcp", _addr, _config.DialTimeout);
-            _conn = (ITcpConn)conn;
+            _conn = (ITcpConn) conn;
             if (_conn == null)
                 throw new Exception("Net.DialTimeout returned null");
             _r = conn;
@@ -187,14 +193,15 @@ namespace NsqSharp.Core
                 if (_addr.Contains(":4151"))
                 {
                     throw new ErrIdentify("Error connecting to nsqd. It looks like you tried to connect to the HTTP port " +
-                        "(4151), use the TCP port (4150) instead.", ex);
+                                          "(4151), use the TCP port (4150) instead.", ex);
                 }
                 else if (_addr.Contains(":4160") || _addr.Contains(":4161"))
                 {
                     throw new ErrIdentify("Error connecting to nsqd. It looks like you tried to connect to nsqlookupd. " +
-                        "Producers must connect to nsqd over TCP (4150). Consumers can connect to nsqd over TCP (4150) using " +
-                        "Consumer.ConnectToNsqd or to nsqlookupd (4161) using Consumer.ConnectToNsqLookupd.", ex);
+                                          "Producers must connect to nsqd over TCP (4150). Consumers can connect to nsqd over TCP (4150) using " +
+                                          "Consumer.ConnectToNSQd or to nsqlookupd (4161) using Consumer.ConnectToNSQLookupd.", ex);
                 }
+
                 throw;
             }
 
@@ -205,6 +212,7 @@ namespace NsqSharp.Core
                     log(LogLevel.Error, "Auth Required");
                     throw new Exception("Auth Required");
                 }
+
                 auth(_config.AuthSecret);
             }
 
@@ -346,7 +354,7 @@ namespace NsqSharp.Core
             }
             catch (Exception ex)
             {
-                object msg = (ex is ConnectionClosedException) ? ex.Message : (object)ex;
+                object msg = (ex is ConnectionClosedException) ? ex.Message : (object) ex;
                 log(LogLevel.Error, string.Format("Conn.WriteCommand IO error - {0}", msg));
                 _delegate.OnIOError(this, ex);
                 throw;
@@ -376,7 +384,7 @@ namespace NsqSharp.Core
             ci.hostname = _config.Hostname;
             ci.user_agent = _config.UserAgent;
             ci.short_id = _config.ClientID; // deprecated
-            ci.long_id = _config.Hostname;  // deprecated
+            ci.long_id = _config.Hostname; // deprecated
             ci.tls_v1 = (_config.TlsConfig != null);
             ci.deflate = false; //_config.Deflate; // TODO: Deflate
             ci.deflate_level = 6; //_config.DeflateLevel; // TODO: Deflate
@@ -388,8 +396,9 @@ namespace NsqSharp.Core
             }
             else
             {
-                ci.heartbeat_interval = (int)_config.HeartbeatInterval.TotalMilliseconds;
+                ci.heartbeat_interval = (int) _config.HeartbeatInterval.TotalMilliseconds;
             }
+
             ci.sample_rate = _config.SampleRate;
             ci.output_buffer_size = _config.OutputBufferSize;
             if (_config.OutputBufferTimeout <= TimeSpan.Zero)
@@ -398,9 +407,10 @@ namespace NsqSharp.Core
             }
             else
             {
-                ci.output_buffer_timeout = (int)_config.OutputBufferTimeout.TotalMilliseconds;
+                ci.output_buffer_timeout = (int) _config.OutputBufferTimeout.TotalMilliseconds;
             }
-            ci.msg_timeout = (int)_config.MessageTimeout.TotalMilliseconds;
+
+            ci.msg_timeout = (int) _config.MessageTimeout.TotalMilliseconds;
 
             try
             {
@@ -432,7 +442,7 @@ namespace NsqSharp.Core
                 var serializer = new DataContractJsonSerializer(typeof(IdentifyResponse));
                 using (var memoryStream = new MemoryStream(data))
                 {
-                    resp = (IdentifyResponse)serializer.ReadObject(memoryStream);
+                    resp = (IdentifyResponse) serializer.ReadObject(memoryStream);
                 }
 
                 _maxRdyCount = resp.MaxRdyCount;
@@ -487,7 +497,7 @@ namespace NsqSharp.Core
             if (tlsConfig == null)
                 throw new ArgumentNullException("tlsConfig", "Set Config.TlsConfig to use TLS");
 
-            ((TcpConn)_conn).UpgradeTls(tlsConfig);
+            ((TcpConn) _conn).UpgradeTls(tlsConfig);
 
             FrameType frameType;
             byte[] body;
@@ -527,7 +537,7 @@ namespace NsqSharp.Core
             var serializer = new DataContractJsonSerializer(typeof(AuthResponse));
             using (var memoryStream = new MemoryStream(data))
             {
-                resp = (AuthResponse)serializer.ReadObject(memoryStream);
+                resp = (AuthResponse) serializer.ReadObject(memoryStream);
             }
 
             log(LogLevel.Info, string.Format("Auth accepted. Identity: {0} {1} Permissions: {2}",
@@ -538,7 +548,7 @@ namespace NsqSharp.Core
         {
             try
             {
-                var msgDelegate = new ConnMessageDelegate { c = this };
+                var msgDelegate = new ConnMessageDelegate {c = this};
 
                 bool doLoop = true;
                 while (doLoop)
@@ -563,6 +573,7 @@ namespace NsqSharp.Core
                             log(LogLevel.Error, string.Format("IO error on ReadUnpackedResponse - {0}", ex));
                             _delegate.OnIOError(this, ex);
                         }
+
                         break;
                     }
 
@@ -580,8 +591,10 @@ namespace NsqSharp.Core
                                 log(LogLevel.Error, string.Format("IO error on Heartbeat - {0}", ex));
                                 _delegate.OnIOError(this, ex);
                             }
+
                             break;
                         }
+
                         continue;
                     }
 
@@ -603,8 +616,9 @@ namespace NsqSharp.Core
                                 doLoop = false;
                                 break;
                             }
+
                             msg.Delegate = msgDelegate;
-                            msg.NsqdAddress = ToString();
+                            msg.NSQdAddress = ToString();
 
                             Interlocked.Decrement(ref _rdyCount);
                             Interlocked.Increment(ref _messagesInFlight);
@@ -643,6 +657,7 @@ namespace NsqSharp.Core
                 {
                     log(LogLevel.Warning, string.Format("delaying close, {0} outstanding messages", messagesInFlight));
                 }
+
                 _wg.Done();
                 log(LogLevel.Info, "readLoop exiting");
             }
@@ -668,10 +683,11 @@ namespace NsqSharp.Core
                         }
                         catch (Exception ex)
                         {
-                            object msg = (ex is ConnectionClosedException) ? ex.Message : (object)ex;
+                            object msg = (ex is ConnectionClosedException) ? ex.Message : (object) ex;
                             log(LogLevel.Error, string.Format("Conn.writeLoop, cmdChan: error sending command {0} - {1}", cmd, msg));
                             close();
                         }
+
                         // TODO: Create PR to remove unnecessary continue in go-nsq
                         // https://github.com/nsqio/go-nsq/blob/v1.0.3/conn.go#L552
                     })
@@ -711,7 +727,7 @@ namespace NsqSharp.Core
                         }
                         catch (Exception ex)
                         {
-                            object msg = (ex is ConnectionClosedException) ? ex.Message : (object)ex;
+                            object msg = (ex is ConnectionClosedException) ? ex.Message : (object) ex;
                             log(LogLevel.Error, string.Format("Conn.writeLoop, msgResponseChan: error sending command {0} - {1}", resp.cmd, msg));
                             close();
                         }
@@ -798,6 +814,7 @@ namespace NsqSharp.Core
                         log(LogLevel.Warning, string.Format("draining... waiting for {0} messages in flight", msgsInFlight));
                         lastWarning = DateTime.Now;
                     }
+
                     continue;
                 }
 
@@ -810,8 +827,10 @@ namespace NsqSharp.Core
                         log(LogLevel.Warning, "draining... readLoop still running");
                         lastWarning = DateTime.Now;
                     }
+
                     continue;
                 }
+
                 break;
             }
 
@@ -831,7 +850,7 @@ namespace NsqSharp.Core
 
         internal void onMessageFinish(Message m)
         {
-            _msgResponseChan.Send(new msgResponse { msg = m, cmd = Command.Finish(m.ID), success = true, backoff = true });
+            _msgResponseChan.Send(new msgResponse {msg = m, cmd = Command.Finish(m.ID), success = true, backoff = true});
         }
 
         internal TimeSpan onMessageRequeue(Message m, TimeSpan? delay, bool backoff)
@@ -888,45 +907,59 @@ namespace NsqSharp.Core
         /// <summary>client_id</summary>
         [DataMember(Name = "client_id")]
         public string client_id { get; set; }
+
         /// <summary>hostname</summary>
         [DataMember(Name = "hostname")]
         public string hostname { get; set; }
+
         /// <summary>user_agent</summary>
         [DataMember(Name = "user_agent")]
         public string user_agent { get; set; }
+
         /// <summary>short_id (deprecated)</summary>
         [DataMember(Name = "short_id")]
         public string short_id { get; set; }
+
         /// <summary>long_id (deprecated)</summary>
         [DataMember(Name = "long_id")]
         public string long_id { get; set; }
+
         /// <summary>tls_v1</summary>
         [DataMember(Name = "tls_v1")]
         public bool tls_v1 { get; set; }
+
         /// <summary>deflate</summary>
         [DataMember(Name = "deflate")]
         public bool deflate { get; set; }
+
         /// <summary>deflate_level</summary>
         [DataMember(Name = "deflate_level")]
         public int deflate_level { get; set; }
+
         /// <summary>snappy</summary>
         [DataMember(Name = "snappy")]
         public bool snappy { get; set; }
+
         /// <summary>feature_negotiation</summary>
         [DataMember(Name = "feature_negotiation")]
         public bool feature_negotiation { get; set; }
+
         /// <summary>heartbeat_interval</summary>
         [DataMember(Name = "heartbeat_interval")]
         public int heartbeat_interval { get; set; }
+
         /// <summary>sample_rate</summary>
         [DataMember(Name = "sample_rate")]
         public int sample_rate { get; set; }
+
         /// <summary>output_buffer_size</summary>
         [DataMember(Name = "output_buffer_size")]
         public long output_buffer_size { get; set; }
+
         /// <summary>output_buffer_timeout</summary>
         [DataMember(Name = "output_buffer_timeout")]
         public int output_buffer_timeout { get; set; }
+
         /// <summary>msg_timeout</summary>
         [DataMember(Name = "msg_timeout")]
         public int msg_timeout { get; set; }

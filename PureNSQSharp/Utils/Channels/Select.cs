@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 
-namespace NsqSharp.Utils.Channels
+namespace PureNSQSharp.Utils.Channels
 {
     /// <summary>
     /// Control structure to send or receive from the first available channel. Chain Case methods and end with a
@@ -156,8 +156,8 @@ namespace NsqSharp.Utils.Channels
                         Chan = c
                     },
                     func == null
-                        ? (Action<object, bool>)null
-                        : (v, ok) => func((T)v, ok)
+                        ? (Action<object, bool>) null
+                        : (v, ok) => func((T) v, ok)
                 );
             }
 
@@ -184,8 +184,8 @@ namespace NsqSharp.Utils.Channels
                         Chan = c
                     },
                     func == null
-                        ? (Action<object, bool>)null
-                        : (v, ok) => func((T)v)
+                        ? (Action<object, bool>) null
+                        : (v, ok) => func((T) v)
                 );
             }
 
@@ -302,6 +302,7 @@ namespace NsqSharp.Utils.Channels
                             exception = ex;
                         }
                     }
+
                     return true;
                 }
             }

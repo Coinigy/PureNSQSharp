@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using NsqSharp.Core;
+using PureNSQSharp.Core;
 
-namespace NsqSharp.Utils.Loggers
+namespace PureNSQSharp.Utils.Loggers
 {
     /// <summary>
     /// Console logger
@@ -40,6 +40,7 @@ namespace NsqSharp.Utils.Loggers
                 _textWriter.WriteLine(message);
                 _textWriter.Flush();
             }
+
             Debug.WriteLine(message);
         }
 

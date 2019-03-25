@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace NsqSharp.Utils
+namespace PureNSQSharp.Utils
 {
     /// <summary>
     /// Thrown when attempting to read or write from a closed <see cref="TcpConn"/>.

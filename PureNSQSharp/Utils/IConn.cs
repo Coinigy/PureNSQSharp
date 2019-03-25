@@ -1,4 +1,4 @@
-﻿namespace NsqSharp.Utils
+﻿namespace PureNSQSharp.Utils
 {
     /// <summary>
     /// IConn interface. http://golang.org/pkg/net/#Conn

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NsqSharp.Utils
+namespace PureNSQSharp.Utils
 {
     /// <summary>
     /// ITcpConn interface. http://golang.org/pkg/net/#TCPConn

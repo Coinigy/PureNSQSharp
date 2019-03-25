@@ -1,4 +1,4 @@
-﻿namespace NsqSharp.Utils.Channels
+﻿namespace PureNSQSharp.Utils.Channels
 {
     /// <summary>
     /// IReceiveOnlyChan interface.

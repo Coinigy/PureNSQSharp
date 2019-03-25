@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace NsqSharp.Utils
+namespace PureNSQSharp.Utils
 {
     /// <summary>
     /// A WaitGroup waits for a collection of routines to finish. The main routine calls Add to set the number of routines to

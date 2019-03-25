@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 
-namespace NsqSharp.Utils.Channels
+namespace PureNSQSharp.Utils.Channels
 {
     /// <summary>
     /// IChan interface.

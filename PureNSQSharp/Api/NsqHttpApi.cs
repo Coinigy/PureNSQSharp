@@ -2,25 +2,25 @@
 using System.IO;
 using System.Net;
 using System.Text;
-using NsqSharp.Core;
+using PureNSQSharp.Core;
 
-namespace NsqSharp.Api
+namespace PureNSQSharp.Api
 {
     /// <summary>
     /// HTTP client for interacting with the common API between nsqd and nsqlookupd. See http://nsq.io/components/nsqd.html#pub.
-    /// See <see cref="NsqdHttpClient"/> and <see cref="NsqLookupdHttpClient"/>.
+    /// See <see cref="NSQdHttpClient"/> and <see cref="NSQLookupdHttpClient"/>.
     /// </summary>
-    public abstract class NsqHttpApi
+    public abstract class NSQHttpApi
     {
         private readonly string _httpAddress;
         private readonly int _timeoutMilliseconds;
 
-        /// <summary>Initializes a new instance of <see cref="NsqHttpApi" /> class.</summary>
+        /// <summary>Initializes a new instance of <see cref="NSQHttpApi" /> class.</summary>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="httpAddress"/> is <c>null</c> or empty.
         /// </exception>
         /// <param name="httpAddress">The nsqd or nsqlookupd HTTP address.</param>
         /// <param name="httpRequestTimeout">The HTTP request timeout.</param>
-        protected NsqHttpApi(string httpAddress, TimeSpan httpRequestTimeout)
+        protected NSQHttpApi(string httpAddress, TimeSpan httpRequestTimeout)
         {
             if (string.IsNullOrEmpty(httpAddress))
                 throw new ArgumentNullException("httpAddress");
@@ -30,9 +30,9 @@ namespace NsqSharp.Api
 
             if (!httpAddress.StartsWith("http"))
                 httpAddress = "http://" + httpAddress;
-            httpAddress = httpAddress.TrimEnd(new[] { '/' });
+            httpAddress = httpAddress.TrimEnd(new[] {'/'});
 
-            _timeoutMilliseconds = (int)httpRequestTimeout.TotalMilliseconds;
+            _timeoutMilliseconds = (int) httpRequestTimeout.TotalMilliseconds;
 
             _httpAddress = httpAddress;
         }
@@ -147,7 +147,7 @@ namespace NsqSharp.Api
             if (string.IsNullOrEmpty(route))
                 throw new ArgumentNullException("route");
 
-            route = route.TrimStart(new[] { '/' });
+            route = route.TrimStart(new[] {'/'});
 
             return string.Format("{0}/{1}", _httpAddress, route);
         }
@@ -182,7 +182,7 @@ namespace NsqSharp.Api
         /// <returns>The response from the server.</returns>
         protected static byte[] Request(string endpoint, HttpMethod httpMethod, int timeoutMilliseconds, byte[] body = null)
         {
-            var webRequest = (HttpWebRequest)WebRequest.Create(endpoint);
+            var webRequest = (HttpWebRequest) WebRequest.Create(endpoint);
             webRequest.Proxy = WebRequest.DefaultWebProxy;
             webRequest.Method = httpMethod == HttpMethod.Post ? "POST" : "GET";
             webRequest.Timeout = timeoutMilliseconds;
@@ -200,13 +200,13 @@ namespace NsqSharp.Api
                 }
             }
 
-            using (var httpResponse = (HttpWebResponse)webRequest.GetResponse())
+            using (var httpResponse = (HttpWebResponse) webRequest.GetResponse())
             using (var responseStream = httpResponse.GetResponseStream())
             {
                 if (responseStream == null)
                     throw new Exception("responseStream is null");
 
-                int contentLength = (int)httpResponse.ContentLength;
+                int contentLength = (int) httpResponse.ContentLength;
                 byte[] responseBytes;
 
                 var buf = new byte[256];
@@ -241,6 +241,7 @@ namespace NsqSharp.Api
     {
         /// <summary>GET method.</summary>
         Get,
+
         /// <summary>POST method.</summary>
         Post
     }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NsqSharp.Utils.Channels
+namespace PureNSQSharp.Utils.Channels
 {
     /// <summary>
     /// ISendOnlyChan interface.

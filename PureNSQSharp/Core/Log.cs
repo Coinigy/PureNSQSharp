@@ -1,4 +1,4 @@
-﻿namespace NsqSharp.Core
+﻿namespace PureNSQSharp.Core
 {
     // https://github.com/nsqio/go-nsq/blob/master/delegates.go
 
@@ -9,12 +9,16 @@
     {
         /// <summary>LogLevelDebugPrefix</summary>
         public const string DebugPrefix = "DBG";
+
         /// <summary>LogLevelInfoPrefix</summary>
         public const string InfoPrefix = "INF";
+
         /// <summary>LogLevelWarningPrefix</summary>
         public const string WarningPrefix = "WRN";
+
         /// <summary>LogLevelErrorPrefix</summary>
         public const string ErrorPrefix = "ERR";
+
         /// <summary>LogLevelCriticalPrefix</summary>
         public const string CriticalPrefix = "FAT";
 

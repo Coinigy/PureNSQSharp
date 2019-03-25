@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Linq;
 
-namespace NsqSharp.Utils
+namespace PureNSQSharp.Utils
 {
     /// <summary>
     /// Slice
@@ -25,7 +24,7 @@ namespace NsqSharp.Utils
             if (typeof(T) != typeof(char))
                 throw new Exception("string construcotr can only be used with Slice<char>");
 
-            _array = (T[])(object)value.ToCharArray();
+            _array = (T[]) (object) value.ToCharArray();
             _offset = 0;
             _maxIndex = _array.Length;
 
@@ -124,7 +123,7 @@ namespace NsqSharp.Utils
         {
             if (typeof(T) == typeof(char))
             {
-                return new string((char[])(object)ToArray());
+                return new string((char[]) (object) ToArray());
             }
 
             return string.Format("[ {0} ]", string.Join(" ", ToArray()));
@@ -211,7 +210,7 @@ namespace NsqSharp.Utils
             if (typeof(T) == typeof(char))
             {
                 var str1 = ToString();
-                var str2 = (string)obj;
+                var str2 = (string) obj;
                 return str1 == str2;
             }
             else

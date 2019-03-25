@@ -7,15 +7,15 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using NsqSharp.Api;
-using NsqSharp.Core;
-using NsqSharp.Utils;
-using NsqSharp.Utils.Channels;
-using NsqSharp.Utils.Extensions;
-using NsqSharp.Utils.Loggers;
-using Timer = NsqSharp.Utils.Timer;
+using PureNSQSharp.Api;
+using PureNSQSharp.Core;
+using PureNSQSharp.Utils;
+using PureNSQSharp.Utils.Channels;
+using PureNSQSharp.Utils.Extensions;
+using PureNSQSharp.Utils.Loggers;
+using Timer = PureNSQSharp.Utils.Timer;
 
-namespace NsqSharp
+namespace PureNSQSharp
 {
     /// <summary>
     ///     <para>Message processing interface for <see cref="Consumer" />.</para>
@@ -88,14 +88,14 @@ namespace NsqSharp
     ///     messages consumed from the specified topic/channel.</para>
     ///     
     ///     <para>If configured, it will poll nsqlookupd instances and handle connection (and reconnection) to any discovered
-    ///     nsqds. See <see cref="ConnectToNsqLookupd"/>.</para>
+    ///     nsqds. See <see cref="ConnectToNSQLookupd"/>.</para>
     /// </summary>
     /// <example>
     ///     <code>
     ///     
     ///     using System;
     ///     using System.Text;
-    ///     using NsqSharp;
+    ///     using NSQSharp;
     ///     
     ///     class Program
     ///     {
@@ -108,8 +108,8 @@ namespace NsqSharp
     ///             // Create a new Consumer for each topic/channel
     ///             var consumer = new Consumer("test-topic-name", "channel-name");
     ///             consumer.AddHandler(new MessageHandler());
-    ///             consumer.ConnectToNsqd("127.0.0.1:4150"); // nsqd tcp address/port
-    ///             //consumer.ConnectToNsqLookupd("127.0.0.1:4161"); // nsqlookupd http address/port
+    ///             consumer.ConnectToNSQd("127.0.0.1:4150"); // nsqd tcp address/port
+    ///             //consumer.ConnectToNSQLookupd("127.0.0.1:4161"); // nsqlookupd http address/port
     ///     
     ///             Console.WriteLine("Listening for messages. Press enter to stop...");
     ///             Console.ReadLine();
@@ -136,8 +136,8 @@ namespace NsqSharp
     ///     </code>
     /// </example>
     /// <seealso cref="AddHandler"/>
-    /// <seealso cref="ConnectToNsqd"/>
-    /// <seealso cref="ConnectToNsqLookupd"/>
+    /// <seealso cref="ConnectToNSQd"/>
+    /// <seealso cref="ConnectToNSQLookupd"/>
     /// <seealso cref="Stop()"/>
     public sealed class Consumer : IConnDelegate
     {
@@ -359,7 +359,7 @@ namespace NsqSharp
         ///     that can filter the list of nsqd addresses returned by nsqlookupd.
         /// </summary>
         /// <param name="discoveryFilter">The discovery filter.</param>
-        /// <seealso cref="ConnectToNsqLookupd"/>
+        /// <seealso cref="ConnectToNSQLookupd"/>
         public void SetBehaviorDelegate(IDiscoveryFilter discoveryFilter)
         {
             // TODO: can go-nsq take a DiscoveryFilter instead of interface{} ?
@@ -400,13 +400,14 @@ namespace NsqSharp
                 {
                     // TODO: if in backoff, would IsStarved return true? what's the impact?
                     // TODO: go-nsq PR, use conn.LastRDY() which does the atomic load for us
-                    long threshold = (long)(conn.LastRDY * 0.85);
+                    long threshold = (long) (conn.LastRDY * 0.85);
                     long inFlight = conn._messagesInFlight;
                     if (inFlight >= threshold && inFlight > 0 && !conn.IsClosing)
                     {
                         return true;
                     }
                 }
+
                 return false;
             }
         }
@@ -449,9 +450,9 @@ namespace NsqSharp
         /// <exception cref="ArgumentException">Thrown when <paramref name="addresses"/> is empty.
         /// </exception>
         /// <param name="addresses">The nsqlookupd address(es) to add.</param>
-        /// <seealso cref="DisconnectFromNsqLookupd"/>
-        /// <seealso cref="ConnectToNsqd"/>
-        public void ConnectToNsqLookupd(params string[] addresses)
+        /// <seealso cref="DisconnectFromNSQLookupd"/>
+        /// <seealso cref="ConnectToNSQd"/>
+        public void ConnectToNSQLookupd(params string[] addresses)
         {
             if (addresses == null)
                 throw new ArgumentNullException("addresses");
@@ -460,11 +461,11 @@ namespace NsqSharp
 
             foreach (string address in addresses)
             {
-                connectToNsqLookupd(address);
+                connectToNSQLookupd(address);
             }
         }
 
-        private void connectToNsqLookupd(string address)
+        private void connectToNSQLookupd(string address)
         {
             if (string.IsNullOrEmpty(address))
                 throw new ArgumentNullException("address");
@@ -515,6 +516,7 @@ namespace NsqSharp
                 // TODO: verify this is the kind of validation we want
                 new Uri(address, UriKind.Absolute);
             }
+
             if (!address.Contains(":"))
                 throw new Exception("missing port");
         }
@@ -526,7 +528,7 @@ namespace NsqSharp
         {
             // add some jitter so that multiple consumers discovering the same topic,
             // when restarted at the same time, dont all connect at once.
-            var jitter = new TimeSpan((long)(_rng.Float64() * _config.LookupdPollJitter * _config.LookupdPollInterval.Ticks));
+            var jitter = new TimeSpan((long) (_rng.Float64() * _config.LookupdPollJitter * _config.LookupdPollInterval.Ticks));
 
             bool doLoop = true;
 
@@ -538,11 +540,11 @@ namespace NsqSharp
             var ticker = new Ticker(_config.LookupdPollInterval);
 
             using (var select =
-                    Select
-                        .CaseReceive(ticker.C, o => queryLookupd())
-                        .CaseReceive(_lookupdRecheckChan, o => queryLookupd())
-                        .CaseReceive(_exitChan, o => doLoop = false)
-                        .NoDefault(defer: true))
+                Select
+                    .CaseReceive(ticker.C, o => queryLookupd())
+                    .CaseReceive(_lookupdRecheckChan, o => queryLookupd())
+                    .CaseReceive(_exitChan, o => doLoop = false)
+                    .NoDefault(defer: true))
             {
                 // ReSharper disable once LoopVariableIsNeverChangedInsideLoop
                 while (doLoop)
@@ -572,6 +574,7 @@ namespace NsqSharp
                 {
                     _lookupdQueryIndex = 0;
                 }
+
                 addr = _lookupdHTTPAddrs[_lookupdQueryIndex];
                 num = _lookupdHTTPAddrs.Count;
             }
@@ -591,14 +594,14 @@ namespace NsqSharp
 
             log(LogLevel.Debug, string.Format("querying nsqlookupd {0}", endpoint));
 
-            int timeoutMilliseconds = (int)_config.DialTimeout.TotalMilliseconds;
+            int timeoutMilliseconds = (int) _config.DialTimeout.TotalMilliseconds;
             if (timeoutMilliseconds < 2000)
                 timeoutMilliseconds = 2000;
 
             TopicProducerInformation[] producers;
             try
             {
-                var nsqLookupdClient = new NsqLookupdHttpClient(endpoint, TimeSpan.FromMilliseconds(timeoutMilliseconds));
+                var nsqLookupdClient = new NSQLookupdHttpClient(endpoint, TimeSpan.FromMilliseconds(timeoutMilliseconds));
                 producers = nsqLookupdClient.Lookup(_topic).Producers;
             }
             catch (Exception ex)
@@ -668,7 +671,7 @@ namespace NsqSharp
             {
                 try
                 {
-                    ConnectToNsqd(addr);
+                    ConnectToNSQd(addr);
                 }
                 catch (Exception ex)
                 {
@@ -680,15 +683,15 @@ namespace NsqSharp
         /// <summary>
         ///     <para>Adds nsqd addresses to directly connect to for this <see cref="Consumer" /> instance.</para>
         ///     
-        ///     <para>It is recommended to use <see cref="ConnectToNsqLookupd"/> so that topics are discovered automatically.
+        ///     <para>It is recommended to use <see cref="ConnectToNSQLookupd"/> so that topics are discovered automatically.
         ///     This method is useful when you want to connect to a single, local instance.</para>
         /// </summary>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="addresses"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="addresses"/> is empty.</exception>
         /// <param name="addresses">The nsqd address(es) to add.</param>
-        /// <seealso cref="DisconnectFromNsqd"/>
-        /// <seealso cref="ConnectToNsqLookupd"/>
-        public void ConnectToNsqd(params string[] addresses)
+        /// <seealso cref="DisconnectFromNSQd"/>
+        /// <seealso cref="ConnectToNSQLookupd"/>
+        public void ConnectToNSQd(params string[] addresses)
         {
             if (addresses == null)
                 throw new ArgumentNullException("addresses");
@@ -697,11 +700,11 @@ namespace NsqSharp
 
             foreach (string address in addresses)
             {
-                connectToNsqd(address);
+                connectToNSQd(address);
             }
         }
 
-        private void connectToNsqd(string addr)
+        private void connectToNSQd(string addr)
         {
             if (string.IsNullOrEmpty(addr))
                 throw new ArgumentNullException("addr");
@@ -731,6 +734,7 @@ namespace NsqSharp
                 {
                     return;
                 }
+
                 _pendingConnections[addr] = conn;
                 if (!_nsqdTCPAddrs.Contains(addr))
                     _nsqdTCPAddrs.Add(addr);
@@ -818,8 +822,8 @@ namespace NsqSharp
         ///     active connections.
         /// </exception>
         /// <param name="nsqdAddress">The nsqd address to disconnect from.</param>
-        /// <seealso cref="ConnectToNsqd"/>
-        public void DisconnectFromNsqd(string nsqdAddress)
+        /// <seealso cref="ConnectToNSQd"/>
+        public void DisconnectFromNSQd(string nsqdAddress)
         {
             if (string.IsNullOrEmpty(nsqdAddress))
                 throw new ArgumentNullException("nsqdAddress");
@@ -864,8 +868,8 @@ namespace NsqSharp
         ///     list.
         /// </exception>
         /// <param name="nsqlookupdAddress">The nsqlookupd address to remove.</param>
-        /// <seealso cref="ConnectToNsqLookupd"/>
-        public void DisconnectFromNsqLookupd(string nsqlookupdAddress)
+        /// <seealso cref="ConnectToNSQLookupd"/>
+        public void DisconnectFromNSQLookupd(string nsqlookupdAddress)
         {
             if (string.IsNullOrEmpty(nsqlookupdAddress))
                 throw new ArgumentNullException("nsqlookupdAddress");
@@ -933,9 +937,13 @@ namespace NsqSharp
             }
         }
 
-        void IConnDelegate.OnError(Conn c, byte[] data) { }
+        void IConnDelegate.OnError(Conn c, byte[] data)
+        {
+        }
 
-        void IConnDelegate.OnHeartbeat(Conn c) { }
+        void IConnDelegate.OnHeartbeat(Conn c)
+        {
+        }
 
         void IConnDelegate.OnIOError(Conn c, Exception err)
         {
@@ -1002,6 +1010,7 @@ namespace NsqSharp
                 {
                     stopHandlers();
                 }
+
                 return;
             }
 
@@ -1043,6 +1052,7 @@ namespace NsqSharp
                         {
                             break;
                         }
+
                         _mtx.EnterReadLock();
                         reconnect = _nsqdTCPAddrs.Contains(connAddr);
                         _mtx.ExitReadLock();
@@ -1051,9 +1061,10 @@ namespace NsqSharp
                             log(LogLevel.Warning, string.Format("({0}) skipped reconnect after removal...", connAddr));
                             return;
                         }
+
                         try
                         {
-                            ConnectToNsqd(connAddr);
+                            ConnectToNSQd(connAddr);
                         }
                         catch (Exception ex)
                         {
@@ -1061,6 +1072,7 @@ namespace NsqSharp
                             continue;
                             // TODO: PR go-nsq if we get DialTimeout this loop stops. check other exceptions.
                         }
+
                         break;
                     }
                 }, string.Format("onConnClose:reconnect: {0}/{1}", _topic, _channel));
@@ -1090,6 +1102,7 @@ namespace NsqSharp
                             backoffCounter--;
                             backoffUpdated = true;
                         }
+
                         break;
                     case BackoffSignal.BackoffFlag:
                         bool increaseBackoffLevel = (backoffCounter == 0);
@@ -1098,13 +1111,16 @@ namespace NsqSharp
                             increaseBackoffLevel = _config.BackoffStrategy.Calculate(_config, backoffCounter)
                                 .IncreaseBackoffLevel;
                         }
+
                         if (increaseBackoffLevel)
                         {
                             backoffCounter++;
                             backoffUpdated = true;
                         }
+
                         break;
                 }
+
                 _backoffCounter = backoffCounter;
 
                 if (backoffCounter == 0 && backoffUpdated)
@@ -1166,12 +1182,13 @@ namespace NsqSharp
                 backoff(TimeSpan.FromSeconds(1));
                 return;
             }
+
             var idx = _rng.Intn(connections.Count);
             var choice = connections[idx];
 
             log(LogLevel.Warning,
                 string.Format("({0}) backoff timeout expired, sending RDY 1",
-                choice));
+                    choice));
 
             // while in backoff only ever let 1 message at a time through
             var err = updateRDY(choice, 1);
@@ -1231,10 +1248,10 @@ namespace NsqSharp
 
             bool doLoop = true;
             using (var select =
-                    Select
-                        .CaseReceive(redistributeTicker.C, o => redistributeRDY())
-                        .CaseReceive(_exitChan, o => doLoop = false)
-                        .NoDefault(defer: true))
+                Select
+                    .CaseReceive(redistributeTicker.C, o => redistributeRDY())
+                    .CaseReceive(_exitChan, o => doLoop = false)
+                    .NoDefault(defer: true))
             {
                 // ReSharper disable once LoopVariableIsNeverChangedInsideLoop
                 while (doLoop)
@@ -1306,6 +1323,7 @@ namespace NsqSharp
                             _rdyRetryMtx.ExitWriteLock();
                         }
                     }
+
                     throw new ErrOverMaxInFlight();
                 }
 
@@ -1401,6 +1419,7 @@ namespace NsqSharp
                     log(LogLevel.Debug, string.Format("({0}) idle connection, giving up RDY", c));
                     updateRDY(c, 0);
                 }
+
                 possibleConns.Add(c);
             }
 
@@ -1574,7 +1593,7 @@ namespace NsqSharp
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="threads"/> is less than 1.
         /// </exception>
         /// <exception cref="Exception">
-        ///     Thrown when <see cref="ConnectToNsqd"/> or <see cref="ConnectToNsqLookupd"/> has been called before invoking
+        ///     Thrown when <see cref="ConnectToNSQd"/> or <see cref="ConnectToNSQLookupd"/> has been called before invoking
         ///     <see cref="AddHandler"/>.
         /// </exception>
         /// <param name="handler">The handler for the topic/channel of this <see cref="Consumer"/> instance.</param>
@@ -1683,6 +1702,7 @@ namespace NsqSharp
 
                 return true;
             }
+
             return false;
         }
 

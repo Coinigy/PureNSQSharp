@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
-using NsqSharp.Utils.Channels;
+using PureNSQSharp.Utils.Channels;
 
-namespace NsqSharp.Utils
+namespace PureNSQSharp.Utils
 {
     /// <summary>
     /// The <see cref="Timer"/> type represents a single event. When the <see cref="Timer"/> expires, the current time

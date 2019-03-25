@@ -6,9 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
-using NsqSharp.Utils;
+using PureNSQSharp.Utils;
 
-namespace NsqSharp.Core
+namespace PureNSQSharp.Core
 {
     // https://github.com/nsqio/go-nsq/blob/master/command.go
 
@@ -24,7 +24,9 @@ namespace NsqSharp.Core
         private static readonly byte[] REGISTER_BYTES = Encoding.UTF8.GetBytes("REGISTER");
         private static readonly byte[] UNREGISTER_BYTES = Encoding.UTF8.GetBytes("UNREGISTER");
         private static readonly byte[] PING_BYTES = Encoding.UTF8.GetBytes("PING");
+
         private static readonly byte[] PUB_BYTES = Encoding.UTF8.GetBytes("PUB");
+
         //private static readonly byte[] DPUB_BYTES = Encoding.UTF8.GetBytes("DPUB"); // TODO
         private static readonly byte[] MPUB_BYTES = Encoding.UTF8.GetBytes("MPUB");
         private static readonly byte[] SUB_BYTES = Encoding.UTF8.GetBytes("SUB");
@@ -35,13 +37,15 @@ namespace NsqSharp.Core
         private static readonly byte[] CLS_BYTES = Encoding.UTF8.GetBytes("CLS");
         private static readonly byte[] NOP_BYTES = Encoding.UTF8.GetBytes("NOP");
 
-        private const byte byteSpace = (byte)' ';
-        private const byte byteNewLine = (byte)'\n';
+        private const byte byteSpace = (byte) ' ';
+        private const byte byteNewLine = (byte) '\n';
 
         /// <summary>Name</summary>
         public byte[] Name { get; set; }
+
         /// <summary>Params</summary>
         public ICollection<byte[]> Params { get; set; }
+
         /// <summary>Body</summary>
         public byte[] Body { get; set; }
 
@@ -204,7 +208,7 @@ namespace NsqSharp.Core
         /// </summary>
         public static Command Register(string topic, string channel)
         {
-            return new Command(REGISTER_BYTES, (byte[])null, topic, channel);
+            return new Command(REGISTER_BYTES, (byte[]) null, topic, channel);
         }
 
         /// <summary>
@@ -212,7 +216,7 @@ namespace NsqSharp.Core
         /// </summary>
         public static Command UnRegister(string topic, string channel)
         {
-            return new Command(UNREGISTER_BYTES, (byte[])null, topic, channel);
+            return new Command(UNREGISTER_BYTES, (byte[]) null, topic, channel);
         }
 
         /// <summary>
@@ -221,7 +225,7 @@ namespace NsqSharp.Core
         /// </summary>
         public static Command Ping()
         {
-            return new Command(PING_BYTES, (byte[])null);
+            return new Command(PING_BYTES, (byte[]) null);
         }
 
         /// <summary>
@@ -270,7 +274,7 @@ namespace NsqSharp.Core
         /// </summary>
         public static Command Subscribe(string topic, string channel)
         {
-            return new Command(SUB_BYTES, (byte[])null, topic, channel);
+            return new Command(SUB_BYTES, (byte[]) null, topic, channel);
         }
 
         /// <summary>
@@ -279,7 +283,7 @@ namespace NsqSharp.Core
         /// </summary>
         public static Command Ready(long count)
         {
-            return new Command(RDY_BYTES, (byte[])null, count.ToString(CultureInfo.InvariantCulture));
+            return new Command(RDY_BYTES, (byte[]) null, count.ToString(CultureInfo.InvariantCulture));
         }
 
         /// <summary>
@@ -293,7 +297,7 @@ namespace NsqSharp.Core
             if (id.Length != Message.MsgIdLength)
                 throw new ArgumentOutOfRangeException("id", id.Length, string.Format("id length must be {0} bytes", Message.MsgIdLength));
 
-            return new Command(FIN_BYTES, null, new List<byte[]> { id });
+            return new Command(FIN_BYTES, null, new List<byte[]> {id});
         }
 
         /// <summary>
@@ -308,7 +312,7 @@ namespace NsqSharp.Core
             if (id.Length != Message.MsgIdLength)
                 throw new ArgumentOutOfRangeException("id", id.Length, string.Format("id length must be {0} bytes", Message.MsgIdLength));
 
-            int delayMilliseconds = (int)delay.TotalMilliseconds;
+            int delayMilliseconds = (int) delay.TotalMilliseconds;
 
             var parameters = new List<byte[]>();
             parameters.Add(id);
@@ -328,7 +332,7 @@ namespace NsqSharp.Core
             if (id.Length != Message.MsgIdLength)
                 throw new ArgumentOutOfRangeException("id", id.Length, string.Format("id length must be {0} bytes", Message.MsgIdLength));
 
-            return new Command(TOUCH_BYTES, null, new List<byte[]> { id });
+            return new Command(TOUCH_BYTES, null, new List<byte[]> {id});
         }
 
         /// <summary>
@@ -339,7 +343,7 @@ namespace NsqSharp.Core
         /// </summary>
         public static Command StartClose()
         {
-            return new Command(CLS_BYTES, (byte[])null);
+            return new Command(CLS_BYTES, (byte[]) null);
         }
 
         /// <summary>
@@ -348,7 +352,7 @@ namespace NsqSharp.Core
         /// </summary>
         public static Command Nop()
         {
-            return new Command(NOP_BYTES, (byte[])null);
+            return new Command(NOP_BYTES, (byte[]) null);
         }
     }
 }

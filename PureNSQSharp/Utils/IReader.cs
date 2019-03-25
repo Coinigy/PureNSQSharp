@@ -1,4 +1,4 @@
-﻿namespace NsqSharp.Utils
+﻿namespace PureNSQSharp.Utils
 {
     /// <summary>
     /// Reader is the interface that wraps the basic Read method. http://golang.org/pkg/io/#Reader

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NsqSharp.Utils.Extensions
+namespace PureNSQSharp.Utils.Extensions
 {
     /// <summary>
     /// <see cref="Object"/> extension methods.
@@ -15,7 +15,7 @@ namespace NsqSharp.Utils.Extensions
         /// <returns>The value as type <typeparamref name="T"/>.</returns>
         public static T Coerce<T>(this object value)
         {
-            return (T)Coerce(value, typeof(T));
+            return (T) Coerce(value, typeof(T));
         }
 
         /// <summary>
@@ -38,24 +38,24 @@ namespace NsqSharp.Utils.Extensions
                 if (valueType == typeof(int))
                     return Convert.ToUInt16(value);
                 if (valueType == typeof(string))
-                    return ushort.Parse((string)value);
+                    return ushort.Parse((string) value);
             }
             else if (targetType == typeof(int))
             {
                 if (valueType == typeof(string))
-                    return int.Parse((string)value);
+                    return int.Parse((string) value);
             }
             else if (targetType == typeof(long))
             {
                 if (valueType == typeof(string))
-                    return long.Parse((string)value);
+                    return long.Parse((string) value);
                 if (valueType == typeof(int))
                     return Convert.ToInt64(value);
             }
             else if (targetType == typeof(double))
             {
                 if (valueType == typeof(string))
-                    return double.Parse((string)value);
+                    return double.Parse((string) value);
                 if (valueType == typeof(int))
                     return Convert.ToDouble(value);
             }
@@ -63,16 +63,17 @@ namespace NsqSharp.Utils.Extensions
             {
                 if (valueType == typeof(string))
                 {
-                    string strValue = (string)value;
+                    string strValue = (string) value;
                     if (strValue == "0")
                         return false;
                     else if (strValue == "1")
                         return true;
                     return bool.Parse(strValue);
                 }
+
                 if (valueType == typeof(int))
                 {
-                    int intValue = (int)value;
+                    int intValue = (int) value;
                     if (intValue == 0)
                         return false;
                     else if (intValue == 1)
@@ -83,7 +84,7 @@ namespace NsqSharp.Utils.Extensions
             {
                 if (valueType == typeof(string))
                 {
-                    string strValue = (string)value;
+                    string strValue = (string) value;
 
                     long ms;
                     if (long.TryParse(strValue, out ms))
@@ -92,6 +93,7 @@ namespace NsqSharp.Utils.Extensions
                     long ns = Time.ParseDuration(strValue);
                     return new TimeSpan(ns / 100);
                 }
+
                 if (valueType == typeof(int) || valueType == typeof(long) || valueType == typeof(ulong))
                 {
                     long ms = Convert.ToInt64(value);
@@ -102,7 +104,7 @@ namespace NsqSharp.Utils.Extensions
             {
                 if (valueType == typeof(string))
                 {
-                    string strValue = (string)value;
+                    string strValue = (string) value;
                     switch (strValue)
                     {
                         case "":

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NsqSharp.Utils.Extensions
+namespace PureNSQSharp.Utils.Extensions
 {
     /// <summary>
     /// <see cref="TimeSpan"/> extension methods.
@@ -12,7 +12,7 @@ namespace NsqSharp.Utils.Extensions
         /// </summary>
         public static long Nanoseconds(this TimeSpan timeSpan)
         {
-            return timeSpan.Ticks*100;
+            return timeSpan.Ticks * 100;
         }
     }
 }

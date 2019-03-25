@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
-using NsqSharp.Utils.Channels;
+using PureNSQSharp.Utils.Channels;
 
-namespace NsqSharp.Utils
+namespace PureNSQSharp.Utils
 {
     // http://golang.org/src/time/time.go
     // http://golang.org/src/time/format.go
@@ -18,14 +18,19 @@ namespace NsqSharp.Utils
 
         /// <summary>Nanosecond</summary>
         public const long Nanosecond = 1;
+
         /// <summary>Microsecond</summary>
         public const long Microsecond = Nanosecond * 1000;
+
         /// <summary>Millisecond</summary>
         public const long Millisecond = Microsecond * 1000;
+
         /// <summary>Second</summary>
         public const long Second = Millisecond * 1000;
+
         /// <summary>Minute</summary>
         public const long Minute = Second * 60;
+
         /// <summary>Hour</summary>
         public const long Hour = Minute * 60;
 
@@ -62,15 +67,18 @@ namespace NsqSharp.Utils
                             }
                         }
                     }
-                    catch { }
+                    catch
+                    {
+                    }
 
                     try
                     {
-                        if (!((IChan)timeoutChan).IsClosed)
+                        if (!((IChan) timeoutChan).IsClosed)
                             timeoutChan.Send(default(bool));
                     }
-                    catch { }
-
+                    catch
+                    {
+                    }
                 }, null, timeout, TimeSpan.FromMilliseconds(-1));
 
             localTimer = t;
@@ -100,13 +108,13 @@ namespace NsqSharp.Utils
             var timer = new Timer(duration);
 
             GoFunc.Run(() =>
-                       {
-                           bool ok;
-                           timer.C.ReceiveOk(out ok);
+            {
+                bool ok;
+                timer.C.ReceiveOk(out ok);
 
-                           if (ok)
-                               f();
-                       }, string.Format("Time.AfterFunc started:{0} duration:{1}", DateTime.Now, duration));
+                if (ok)
+                    f();
+            }, string.Format("Time.AfterFunc started:{0} duration:{1}", DateTime.Now, duration));
 
             return timer;
         }
@@ -139,30 +147,33 @@ namespace NsqSharp.Utils
                 {
                     break;
                 }
+
                 if (x >= (long.MaxValue - 10) / 10)
                 {
                     // overflow
                     throw new OverflowException(s.ToString());
                 }
+
                 x = x * 10 + (c - '0');
             }
+
             s = s.Slc(i);
             return x;
         }
 
         private static readonly Dictionary<string, double> _unitMap = new Dictionary<string, double>
-                                                                     {
-                                                                         {"ns", Nanosecond},
-                                                                         {"us", Microsecond},
-                                                                         // U+00B5 = micro symbol
-                                                                         {"µs", Microsecond},
-                                                                         // U+03BC = Greek letter mu
-                                                                         {"μs", Microsecond},
-                                                                         {"ms", Millisecond},
-                                                                         {"s", Second},
-                                                                         {"m", Minute},
-                                                                         {"h", Hour},
-                                                                     };
+        {
+            {"ns", Nanosecond},
+            {"us", Microsecond},
+            // U+00B5 = micro symbol
+            {"µs", Microsecond},
+            // U+03BC = Greek letter mu
+            {"μs", Microsecond},
+            {"ms", Millisecond},
+            {"s", Second},
+            {"m", Minute},
+            {"h", Hour},
+        };
 
         /// <summary>
         /// ParseDuration parses a duration string.
@@ -233,9 +244,11 @@ namespace NsqSharp.Utils
                     {
                         scale *= 10;
                     }
+
                     g += x / scale;
                     post = (pl2 != s.Len());
                 }
+
                 if (!pre && !post)
                 {
                     // no digits (e.g. ".s" or "-.s")
@@ -252,10 +265,12 @@ namespace NsqSharp.Utils
                         break;
                     }
                 }
+
                 if (i == 0)
                 {
                     throw new InvalidDataException("time: missing unit in duration " + orig);
                 }
+
                 var u = s.Slc(0, i);
                 s = s.Slc(i);
 
@@ -268,7 +283,7 @@ namespace NsqSharp.Utils
 
                 checked
                 {
-                    f += (long)(g * unit);
+                    f += (long) (g * unit);
                 }
             }
 

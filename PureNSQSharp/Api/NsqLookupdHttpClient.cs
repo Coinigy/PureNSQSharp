@@ -4,15 +4,15 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 
-namespace NsqSharp.Api
+namespace PureNSQSharp.Api
 {
     /// <summary>An nsqlookupd HTTP client.</summary>
-    public class NsqLookupdHttpClient : NsqHttpApi
+    public class NSQLookupdHttpClient : NSQHttpApi
     {
-        /// <summary>Initializes a new instance of <see cref="NsqLookupdHttpClient" /> class.</summary>
+        /// <summary>Initializes a new instance of <see cref="NSQLookupdHttpClient" /> class.</summary>
         /// <param name="nsqlookupdHttpAddress">The nsqlookupd HTTP address, including port. Example: 127.0.0.1:4161</param>
         /// <param name="httpRequestTimeout">The HTTP request timeout.</param>
-        public NsqLookupdHttpClient(string nsqlookupdHttpAddress, TimeSpan httpRequestTimeout)
+        public NSQLookupdHttpClient(string nsqlookupdHttpAddress, TimeSpan httpRequestTimeout)
             : base(nsqlookupdHttpAddress, httpRequestTimeout)
         {
         }
@@ -21,16 +21,16 @@ namespace NsqSharp.Api
 
         /// <summary>Returns a list of nsqd producers and channel information for a topic.</summary>
         /// <param name="topic">The topic to list producers for.</param>
-        public NsqLookupdLookupResponse Lookup(string topic)
+        public NSQLookupdLookupResponse Lookup(string topic)
         {
             ValidateTopic(topic);
 
             var json = Get(string.Format("/lookup?topic={0}", topic));
 
-            var serializer = new DataContractJsonSerializer(typeof(NsqLookupdLookupResponse));
+            var serializer = new DataContractJsonSerializer(typeof(NSQLookupdLookupResponse));
             using (var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
             {
-                return ((NsqLookupdLookupResponse)serializer.ReadObject(memoryStream));
+                return ((NSQLookupdLookupResponse) serializer.ReadObject(memoryStream));
             }
         }
 
@@ -39,10 +39,10 @@ namespace NsqSharp.Api
         {
             var json = Get(string.Format("/topics"));
 
-            var serializer = new DataContractJsonSerializer(typeof(NsqLookupdTopicsResponse));
+            var serializer = new DataContractJsonSerializer(typeof(NSQLookupdTopicsResponse));
             using (var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
             {
-                return ((NsqLookupdTopicsResponse)serializer.ReadObject(memoryStream)).Topics;
+                return ((NSQLookupdTopicsResponse) serializer.ReadObject(memoryStream)).Topics;
             }
         }
 
@@ -60,10 +60,10 @@ namespace NsqSharp.Api
         {
             var json = Get(string.Format("/nodes"));
 
-            var serializer = new DataContractJsonSerializer(typeof(NsqLookupdNodesResponse));
+            var serializer = new DataContractJsonSerializer(typeof(NSQLookupdNodesResponse));
             using (var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
             {
-                return ((NsqLookupdNodesResponse)serializer.ReadObject(memoryStream)).Producers;
+                return ((NSQLookupdNodesResponse) serializer.ReadObject(memoryStream)).Producers;
             }
         }
 
@@ -89,7 +89,7 @@ namespace NsqSharp.Api
 
     /// <summary>nsqlookupd response to /topics.</summary>
     [DataContract]
-    public class NsqLookupdTopicsResponse
+    public class NSQLookupdTopicsResponse
     {
         /// <summary>Gets or sets the topics.</summary>
         /// <value>The topics.</value>
@@ -99,7 +99,7 @@ namespace NsqSharp.Api
 
     /// <summary>nsqlookupd response from /nodes.</summary>
     [DataContract]
-    public class NsqLookupdNodesResponse
+    public class NSQLookupdNodesResponse
     {
         /// <summary>Gets or sets the producers.</summary>
         /// <value>The producers.</value>
@@ -124,7 +124,7 @@ namespace NsqSharp.Api
 
     /// <summary>nsqlookupd response from /lookup?topic=[topic_name].</summary>
     [DataContract]
-    public class NsqLookupdLookupResponse
+    public class NSQLookupdLookupResponse
     {
         /// <summary>Gets or sets the nodes producing the topic.</summary>
         /// <value>The nodes producing the topic.</value>

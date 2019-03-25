@@ -1,7 +1,7 @@
 ﻿using System;
-using NsqSharp.Utils.Attributes;
+using PureNSQSharp.Utils.Attributes;
 
-namespace NsqSharp.Utils.Extensions
+namespace PureNSQSharp.Utils.Extensions
 {
     /// <summary>
     /// <see cref="OptAttribute"/> extension methods.

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace NsqSharp.Utils.Extensions
+namespace PureNSQSharp.Utils.Extensions
 {
     /// <summary>
     /// <see cref="PropertyInfo"/> extension methods.

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Security.Authentication;
 
-namespace NsqSharp.Utils
+namespace PureNSQSharp.Utils
 {
     /// <summary>
     /// TlsConfig. Minimal implementation of http://golang.org/pkg/crypto/tls/#Config
@@ -50,15 +50,15 @@ namespace NsqSharp.Utils
         public SslProtocols GetEnabledSslProtocols()
         {
             int intSslProtocols = 0;
-            int minSslProtocol = (int)MinVersion;
+            int minSslProtocol = (int) MinVersion;
 
             foreach (var sslProtocol in Enum.GetValues(typeof(SslProtocols)).Cast<int>())
             {
-                if (sslProtocol >= minSslProtocol && sslProtocol != (int)SslProtocols.Default)
+                if (sslProtocol >= minSslProtocol && sslProtocol != (int) SslProtocols.Default)
                     intSslProtocols |= sslProtocol;
             }
 
-            return (SslProtocols)intSslProtocols;
+            return (SslProtocols) intSslProtocols;
         }
 
         internal TlsConfig Clone()

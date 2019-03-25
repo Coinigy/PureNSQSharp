@@ -1,4 +1,4 @@
-﻿namespace NsqSharp.Core
+﻿namespace PureNSQSharp.Core
 {
     // https://github.com/nsqio/go-nsq/blob/master/version.go
 
@@ -9,7 +9,7 @@
     {
         static ClientInfo()
         {
-            var version = typeof (ClientInfo).Assembly.GetName().Version;
+            var version = typeof(ClientInfo).Assembly.GetName().Version;
             Version = string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build);
         }
 
@@ -17,6 +17,6 @@
         public static string Version { get; private set; }
 
         /// <summary>Client name</summary>
-        public const string ClientName = "NsqSharp";
+        public const string ClientName = "NSQSharp";
     }
 }

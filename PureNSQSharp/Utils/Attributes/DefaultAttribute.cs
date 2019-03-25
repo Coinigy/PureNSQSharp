@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NsqSharp.Utils.Attributes
+namespace PureNSQSharp.Utils.Attributes
 {
     /// <summary>
     /// Default value attribute.

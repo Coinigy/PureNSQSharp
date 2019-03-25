@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Security.Authentication;
 using System.Security.Cryptography;
-using NsqSharp.Core;
-using NsqSharp.Utils;
-using NsqSharp.Utils.Attributes;
-using NsqSharp.Utils.Extensions;
+using PureNSQSharp.Core;
+using PureNSQSharp.Utils;
+using PureNSQSharp.Utils.Attributes;
+using PureNSQSharp.Utils.Extensions;
 
-namespace NsqSharp
+namespace PureNSQSharp
 {
     /// <summary>
     /// Define handlers for setting config defaults, and setting config values from command line arguments or config files
@@ -31,6 +31,7 @@ namespace NsqSharp
     {
         /// <summary>Unit of time for calculating consumer backoff.</summary>
         TimeSpan BackoffMultiplier { get; }
+
         /// <summary>
         ///     The max backoff duration used for calculating whether the backoff level should increase.
         ///     See <see cref="IBackoffStrategy.Calculate"/>.
@@ -63,6 +64,7 @@ namespace NsqSharp
     {
         /// <summary>The backoff duration.</summary>
         public TimeSpan Duration { get; set; }
+
         /// <summary>Indicates whether the caller should increase the backoff level.</summary>
         public bool IncreaseBackoffLevel { get; set; }
     }
@@ -85,7 +87,7 @@ namespace NsqSharp
         public BackoffCalculation Calculate(IBackoffConfig backoffConfig, int backoffLevel)
         {
             var backoffDuration = new TimeSpan(backoffConfig.BackoffMultiplier.Ticks *
-                (long)Math.Pow(2, backoffLevel - 1));
+                                               (long) Math.Pow(2, backoffLevel - 1));
 
             return new BackoffCalculation
             {
@@ -128,9 +130,9 @@ namespace NsqSharp
             );
 
             var backoffDuration = new TimeSpan(backoffConfig.BackoffMultiplier.Ticks *
-                (long)Math.Pow(2, backoffLevel - 1));
+                                               (long) Math.Pow(2, backoffLevel - 1));
 
-            int maxBackoffMilliseconds = (int)backoffDuration.TotalMilliseconds;
+            int maxBackoffMilliseconds = (int) backoffDuration.TotalMilliseconds;
             int backoffMilliseconds = maxBackoffMilliseconds == 0 ? 0 : rng.Intn(maxBackoffMilliseconds);
 
             return new BackoffCalculation
@@ -202,10 +204,12 @@ namespace NsqSharp
         /// </summary>
         [Opt("backoff_strategy"), Default("exponential")]
         public IBackoffStrategy BackoffStrategy { get; set; }
+
         /// <summary>Maximum amount of time to backoff when processing fails.
         /// Range: 0-60m Default: 2m</summary>
         [Opt("max_backoff_duration"), Min("0"), Max("60m"), Default("2m")]
         public TimeSpan MaxBackoffDuration { get; set; }
+
         /// <summary>Unit of time for calculating consumer backoff.
         /// Default backoff calculation: 2^(backoffLevel-1) * <see cref="BackoffMultiplier"/>.
         /// Will not exceed <see cref="MaxBackoffDuration"/>.
@@ -249,7 +253,7 @@ namespace NsqSharp
         public string Hostname { get; set; }
 
         /// <summary>UserAgent identifier sent to nsqd representing this client, in the spirit of HTTP
-        /// Default: NsqSharp/[version].</summary>
+        /// Default: NSQSharp/[version].</summary>
         [Opt("user_agent")]
         public string UserAgent { get; set; }
 
@@ -295,6 +299,7 @@ namespace NsqSharp
         /// Default: 16384</summary>
         [Opt("output_buffer_size"), Default(16384)]
         public long OutputBufferSize { get; set; }
+
         /// <summary>
         /// <para>Timeout used by nsqd before flushing buffered writes (set to 0 to disable). Default: 250ms</para>
         ///
@@ -330,7 +335,7 @@ namespace NsqSharp
         /// </summary>
         public Config()
         {
-            configHandlers = new List<configHandler> { new structTagsConfig(), new tlsConfig() };
+            configHandlers = new List<configHandler> {new structTagsConfig(), new tlsConfig()};
             setDefaults();
         }
 
@@ -435,14 +440,14 @@ namespace NsqSharp
 
                     if (min != null)
                     {
-                        var coercedMinVal = (IComparable)opt.Coerce(min.Value, field.PropertyType);
+                        var coercedMinVal = (IComparable) opt.Coerce(min.Value, field.PropertyType);
                         if (coercedMinVal.CompareTo(coercedVal) == 1)
                             throw new Exception(string.Format("invalid {0} ! {1} < {2}", opt.Name, coercedVal, coercedMinVal));
                     }
 
                     if (max != null)
                     {
-                        var coercedMaxVal = (IComparable)opt.Coerce(max.Value, field.PropertyType);
+                        var coercedMaxVal = (IComparable) opt.Coerce(max.Value, field.PropertyType);
                         if (coercedMaxVal.CompareTo(coercedVal) == -1)
                             throw new Exception(string.Format("invalid {0} ! {1} > {2}", opt.Name, coercedVal, coercedMaxVal));
                     }
@@ -469,7 +474,7 @@ namespace NsqSharp
 
                 string hostname = OS.Hostname();
 
-                c.ClientID = hostname.Split(new[] { '.' })[0];
+                c.ClientID = hostname.Split(new[] {'.'})[0];
                 c.Hostname = hostname;
                 c.UserAgent = string.Format("{0}/{1}", ClientInfo.ClientName, ClientInfo.Version);
             }
@@ -490,13 +495,14 @@ namespace NsqSharp
                     var opt = field.Get<OptAttribute>();
                     if (min != null)
                     {
-                        var coercedMinVal = (IComparable)opt.Coerce(min.Value, field.PropertyType);
+                        var coercedMinVal = (IComparable) opt.Coerce(min.Value, field.PropertyType);
                         if (coercedMinVal.CompareTo(value) == 1)
                             throw new Exception(string.Format("invalid {0} ! {1} < {2}", opt.Name, value, coercedMinVal));
                     }
+
                     if (max != null)
                     {
-                        var coercedMaxVal = (IComparable)opt.Coerce(max.Value, field.PropertyType);
+                        var coercedMaxVal = (IComparable) opt.Coerce(max.Value, field.PropertyType);
                         if (coercedMaxVal.CompareTo(value) == -1)
                             throw new Exception(string.Format("invalid {0} ! {1} > {2}", opt.Name, value, coercedMaxVal));
                     }
@@ -526,19 +532,20 @@ namespace NsqSharp
                     case "tls_insecure_skip_verify":
                         return true;
                 }
+
                 return false;
             }
 
             public void Set(Config c, string option, object value)
             {
                 var tlsConfig = c.TlsConfig != null
-                                    ? c.TlsConfig.Clone()
-                                    : new TlsConfig();
+                    ? c.TlsConfig.Clone()
+                    : new TlsConfig();
 
                 switch (option)
                 {
                     case "tls_min_version":
-                        var version = (string)value;
+                        var version = (string) value;
                         switch (version)
                         {
                             case "ssl3.0":
@@ -558,6 +565,7 @@ namespace NsqSharp
                             default:
                                 throw new Exception(string.Format("ERROR: {0} is not a tls version", value));
                         }
+
                         break;
                     case "tls_check_certificate_revocation":
                         bool checkCertificationRevocation = value.Coerce<bool>();

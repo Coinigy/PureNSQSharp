@@ -3,9 +3,9 @@ using System.IO;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
-using NsqSharp.Utils.Extensions;
+using PureNSQSharp.Utils.Extensions;
 
-namespace NsqSharp.Utils
+namespace PureNSQSharp.Utils
 {
     internal class TcpConn : ITcpConn
     {
@@ -89,13 +89,13 @@ namespace NsqSharp.Utils
         public TimeSpan ReadTimeout
         {
             get { return TimeSpan.FromMilliseconds(_tcpClient.ReceiveTimeout); }
-            set { _tcpClient.ReceiveTimeout = (int)value.TotalMilliseconds; }
+            set { _tcpClient.ReceiveTimeout = (int) value.TotalMilliseconds; }
         }
 
         public TimeSpan WriteTimeout
         {
             get { return TimeSpan.FromMilliseconds(_tcpClient.SendTimeout); }
-            set { _tcpClient.SendTimeout = (int)value.TotalMilliseconds; }
+            set { _tcpClient.SendTimeout = (int) value.TotalMilliseconds; }
         }
 
         public int Read(byte[] b)
@@ -118,6 +118,7 @@ namespace NsqSharp.Utils
                         return total;
                     total += n;
                 }
+
                 return total;
             }
         }

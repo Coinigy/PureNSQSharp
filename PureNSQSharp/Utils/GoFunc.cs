@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
-using NsqSharp.Core;
-using NsqSharp.Utils.Loggers;
+using PureNSQSharp.Core;
+using PureNSQSharp.Utils.Loggers;
 
-namespace NsqSharp.Utils
+namespace PureNSQSharp.Utils
 {
     /// <summary>
     /// Go routines
@@ -22,24 +22,24 @@ namespace NsqSharp.Utils
                 throw new ArgumentNullException("action");
 
             var t = new Thread(() =>
-                               {
-                                   try
-                                   {
-                                       action();
-                                   }
-                                   catch (ThreadAbortException)
-                                   {
-                                   }
-                                   catch (Exception ex)
-                                   {
-                                       var logger = new TraceLogger();
-                                       logger.Output(LogLevel.Critical, string.Format("{0} - {1}", threadName, ex));
-                                       logger.Flush();
-                                       Trace.Flush();
-                                       throw;
-                                   }
-                               }
-                );
+                {
+                    try
+                    {
+                        action();
+                    }
+                    catch (ThreadAbortException)
+                    {
+                    }
+                    catch (Exception ex)
+                    {
+                        var logger = new TraceLogger();
+                        logger.Output(LogLevel.Critical, string.Format("{0} - {1}", threadName, ex));
+                        logger.Flush();
+                        Trace.Flush();
+                        throw;
+                    }
+                }
+            );
 
             if (threadName != null)
                 t.Name = threadName;

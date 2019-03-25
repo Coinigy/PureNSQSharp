@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
-using NsqSharp.Core;
+using PureNSQSharp.Core;
 
-namespace NsqSharp.Utils.Loggers
+namespace PureNSQSharp.Utils.Loggers
 {
     /// <summary>
     /// Trace logger
@@ -15,7 +15,7 @@ namespace NsqSharp.Utils.Loggers
         /// </summary>
         public TraceLogger()
         {
-            _traceSource = new TraceSource("NsqSharp");
+            _traceSource = new TraceSource("NSQSharp");
         }
 
         /// Output writes the output for a logging event. The string s contains

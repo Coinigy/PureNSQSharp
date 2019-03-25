@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace NsqSharp.Utils.Extensions
+namespace PureNSQSharp.Utils.Extensions
 {
     /// <summary>
     /// <see cref="RNGCryptoServiceProvider"/> extension methods.
@@ -17,7 +17,7 @@ namespace NsqSharp.Utils.Extensions
         {
             byte[] value = new byte[8];
             rng.GetBytes(value);
-            return (double)Math.Min(UInt64.MaxValue - 1, BitConverter.ToUInt64(value, 0)) / ulong.MaxValue;
+            return (double) Math.Min(UInt64.MaxValue - 1, BitConverter.ToUInt64(value, 0)) / ulong.MaxValue;
         }
 
         /// <summary>

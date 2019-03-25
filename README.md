@@ -1,11 +1,11 @@
-NsqSharp
+PureNSQSharp
 ========
 
 A .NET Standard client library for [NSQ](https://github.com/nsqio/nsq), a realtime distributed messaging platform.
 
 ## Quick Install
 
-NsqSharp is a client library that talks to the `nsqd` (message queue) and `nsqlookupd` (topic discovery service).
+PureNSQSharp is a client library that talks to the `nsqd` (message queue) and `nsqlookupd` (topic discovery service).
 
 ```
 nsqlookupd
@@ -18,7 +18,7 @@ nsqd -lookupd-tcp-address=127.0.0.1:4160
 
 ```cs
 using System;
-using NsqSharp;
+using PureNSQSharp;
 
 class Program
 {
@@ -45,7 +45,7 @@ class Program
 ```cs
 using System;
 using System.Text;
-using NsqSharp;
+using PureNSQSharp;
 
 class Program
 {

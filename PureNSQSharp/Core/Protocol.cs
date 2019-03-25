@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Text;
 using System.Text.RegularExpressions;
-using NsqSharp.Utils;
+using PureNSQSharp.Utils;
 
-namespace NsqSharp.Core
+namespace PureNSQSharp.Core
 {
     // https://github.com/nsqio/go-nsq/blob/master/protocol.go
 
@@ -30,8 +30,10 @@ namespace NsqSharp.Core
     {
         /// <summary>Response</summary>
         Response = 0,
+
         /// <summary>Error</summary>
         Error = 1,
+
         /// <summary>Message</summary>
         Message = 2
     }
@@ -103,7 +105,7 @@ namespace NsqSharp.Core
             if (response.Length < 4)
                 throw new ArgumentException("length of response is too small", "response");
 
-            frameType = (FrameType)Binary.BigEndian.Int32(response);
+            frameType = (FrameType) Binary.BigEndian.Int32(response);
             body = new byte[response.Length - 4];
             Buffer.BlockCopy(response, 4, body, 0, body.Length);
         }

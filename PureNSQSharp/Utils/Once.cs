@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NsqSharp.Utils
+namespace PureNSQSharp.Utils
 {
     // https://golang.org/src/sync/once.go
 

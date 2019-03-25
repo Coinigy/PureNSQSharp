@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace NsqSharp.Utils.Channels
+namespace PureNSQSharp.Utils.Channels
 {
     /// <summary>
     /// Channel for synchronizing communication between threads. Supports foreach to read from the channel until it's closed. See also <see cref="Select"/>.
@@ -59,7 +59,7 @@ namespace NsqSharp.Utils.Channels
         /// <param name="message">The message to send.</param>
         public void Send(T message)
         {
-            ((ISendOnlyChan)this).TrySend(message, _infiniteTimeSpan);
+            ((ISendOnlyChan) this).TrySend(message, _infiniteTimeSpan);
         }
 
         bool ISendOnlyChan.TrySend(object message, TimeSpan timeout)
@@ -91,6 +91,7 @@ namespace NsqSharp.Utils.Channels
                     _isReadyToSend = false;
                     throw new ChannelClosedException();
                 }
+
                 bool waitForReceive = true;
                 if (!success)
                 {
@@ -108,7 +109,7 @@ namespace NsqSharp.Utils.Channels
                     }
                 }
 
-                Enqueue((T)message);
+                Enqueue((T) message);
 
                 if (waitForReceive)
                 {
@@ -203,6 +204,7 @@ namespace NsqSharp.Utils.Channels
                         _isReadyToSend = (_buffer.Count > 0);
                     }
                 }
+
                 _receiveComplete.Set();
             }
 
