@@ -122,12 +122,6 @@
     <Compile Include="TestHelpers\Result.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NsqSharp\NsqSharp.csproj">
-      <Project>{7327244d-e163-4c35-9c1a-8dbdf06b9408}</Project>
-      <Name>NsqSharp</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="NsqSharp.Tests.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

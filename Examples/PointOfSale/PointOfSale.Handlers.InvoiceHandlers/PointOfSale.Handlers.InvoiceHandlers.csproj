@@ -66,10 +66,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\NsqSharp\NsqSharp.csproj">
-      <Project>{7327244d-e163-4c35-9c1a-8dbdf06b9408}</Project>
-      <Name>NsqSharp</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PointOfSale.Common\PointOfSale.Common.csproj">
       <Project>{75654883-d9c6-498f-9af5-ac1201769890}</Project>
       <Name>PointOfSale.Common</Name>
