@@ -2,6 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>A .NET Standard client library for NSQ, a realtime distributed messaging platform.</Description>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/Coinigy/PureNSQSharp/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Coinigy/PureNSQSharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Coinigy/PureNSQSharp</RepositoryUrl>
+    <RepositoryType>GIT</RepositoryType>
+    <PackageTags>NSQ, messaging, queue, netstandard</PackageTags>
+    <PackageReleaseNotes>see git</PackageReleaseNotes>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
+    <Version>1.0.1</Version>
+    <PackageIconUrl>https://raw.githubusercontent.com/Coinigy/PureNSQSharp/master/PWSIcon.ico</PackageIconUrl>
   </PropertyGroup>
 
   <ItemGroup>
